@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-#    command: python src/wahapedia_tui.py
     volumes:
       - ./:/code
   
@@ -16,7 +15,4 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db:/data/postgres
-
-volumes:
-  db:
+      - ./postgres-data:/var/lib/postgresql/data

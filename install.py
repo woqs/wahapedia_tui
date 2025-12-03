@@ -2,6 +2,7 @@ import urllib.request
 import pandas
 from sqlalchemy import create_engine
 import src.models
+from src.db import engine
 
 if __name__ == "__main__":
     local_filenames = []
@@ -46,10 +47,6 @@ if __name__ == "__main__":
     local_filenames.append(local_filename)
     local_filename, headers = urllib.request.urlretrieve("http://wahapedia.ru/wh40k10ed/Last_update.csv", "/tmp/Last_update.csv")
     local_filenames.append(local_filename)
-
-    print("connection db")
-    connection_string = "postgresql://wahapedia:wahapedia@db:5432/wahapedia" 
-    engine = create_engine(connection_string)
 
     for local_filename in local_filenames:
         dbEntity = "".join(map(lambda s: s.capitalize(), local_filename.replace(".csv", "").replace("/tmp/", "").split("_")))
