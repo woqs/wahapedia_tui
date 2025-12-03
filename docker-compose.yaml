@@ -1,0 +1,22 @@
+services:
+  python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    command: python src/wahapedia_tui.py
+    volumes:
+      - ./:/code
+  
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: wahapedia
+      POSTGRES_USER: wahapedia
+      POSTGRES_PASSWORD: wahapedia
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/data/postgres
+
+volumes:
+  db:
