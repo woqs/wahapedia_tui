@@ -7,5 +7,5 @@ dk-wahapedia:
 	docker compose up -d
 	docker compose exec python python /code/src/wahapedia_tui.py
 
-make dk-down:
+dk-down:
 	docker compose down
