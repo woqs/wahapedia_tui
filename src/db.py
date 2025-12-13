@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 import models
 
@@ -10,3 +10,6 @@ session = SessionLocal()
 
 def get_faction_list() -> list[models.Factions]:
     return session.query(models.Factions).all()
+
+def get_datasheets_for_faction(factionId: str) -> list[models.Datasheets]:
+    return session.query(models.Datasheets).where(models.Datasheets.faction_id == factionId)
