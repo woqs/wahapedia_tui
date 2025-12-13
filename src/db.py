@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 import models
 
 connection_string = "postgresql://wahapedia:wahapedia@db:5432/wahapedia" 
-engine = create_engine(connection_string, echo=True)
+engine = create_engine(connection_string)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session = SessionLocal()

@@ -1,13 +1,15 @@
 from textual import on
 from textual.app import App, ComposeResult
-from textual.widgets import Select, Placeholder, Static, ListView, Label, ListItem, Input
+from textual.widget import Widget
+from textual.widgets import Select, ListView, Input
 from widgets import DatasheetLabel
+from panel_datasheet import DatasheetPanel
 import re
 import db
 import models
 
 
-class LeftPanel(Placeholder):
+class LeftPanel(Widget):
     DEFAULT_CSS = """
 LeftPanel {
     height: 1fr;
@@ -43,19 +45,7 @@ LeftPanel {
             )
 
 
-class RightPanel(Placeholder):
-    DEFAULT_CSS = """
-RightPanel {
-    height: 1fr;
-    width: 0.8fr;
-}
-"""
-    field = Static()
-    
-    def compose(self):
-        yield self.field
-
-class MainPanel(Placeholder):
+class MainPanel(Widget):
     DEFAULT_CSS = """
 MainPanel {
     layout: horizontal;
@@ -64,7 +54,7 @@ MainPanel {
 }
 """
     leftPanel = LeftPanel()
-    rightPanel = RightPanel()
+    rightPanel = DatasheetPanel()
 
     def compose(self):
         yield self.leftPanel
@@ -72,7 +62,7 @@ MainPanel {
     
     @on(ListView.Selected)
     def on_list_view_selected(self, event: ListView.Selected) -> None:
-        self.rightPanel.field.content = str(event.item.sheet.name)
+        self.rightPanel.sheet = event.item.sheet
 
 
 class WahapediaTUI(App):
