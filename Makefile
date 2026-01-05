@@ -5,7 +5,7 @@ dk-install:
 
 dk-wahapedia:
 	docker compose up -d
-	docker compose exec python python /code/src/wahapedia_tui.py
+	docker compose exec python textual run --dev /code/src/wahapedia_tui.py
 
 dk-down:
 	docker compose down

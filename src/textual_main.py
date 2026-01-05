@@ -6,7 +6,6 @@ from widgets import DatasheetLabel
 from panel_datasheet import DatasheetPanel
 import re
 import db
-import models
 
 
 class LeftPanel(Widget):
@@ -66,9 +65,6 @@ MainPanel {
 
 
 class WahapediaTUI(App):
-
-    def on_mount(self) -> None:
-        self.screen.styles.background = "darkblue"
 
     def compose(self) -> ComposeResult:
         yield MainPanel()
