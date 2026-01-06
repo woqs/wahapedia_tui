@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 import models
 
@@ -18,9 +18,15 @@ def get_datasheets_for_faction(factionId: str) -> list[models.Datasheets]:
         models.Datasheets.faction_id == factionId
     )
 
-def get_models_from_sheet(sheet: models.Datasheet) -> list[models.DatasheetsModels]:
-    return session.query(
-        models.DatasheetsModels
+def get_models_enriched_sheet(sheet: models.Datasheet) -> models.Datasheets:
+    stmt = select(
+        models.Datasheets
+    ).join(
+        models.Datasheets.models
+    ).join(
+        models.Datasheets.models_cost
     ).where(
-        models.DatasheetsModels.datasheet_id == sheet.id
-    ).all()
+        models.Datasheets.id == sheet.id
+    )
+    result = session.execute(stmt)
+    return result.fetchone()[0]
