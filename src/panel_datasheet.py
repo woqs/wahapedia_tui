@@ -5,6 +5,7 @@ from textual.widgets import Static, ListView, Label, ListItem
 import models
 from db import get_models_enriched_sheet
 from components.model import Model
+from components.abilities import Abilities
 
 
 class Header(Static):
@@ -18,8 +19,21 @@ Header {
     border: double white;
 }
 """
+class ModelsContainer(Horizontal):
+    DEFAULT_CSS = """
+ModelsContainer {
+    width: 100%;
+}
+"""
+class ModelsDisplay(Vertical):
+    DEFAULT_CSS = """
+ModelsDisplay {
+    width: 70%;
+    height: 0.3fr;
+}
+"""
 
-class DatasheetPanel(Widget):
+class DatasheetPanel(VerticalScroll):
     DEFAULT_CSS = """
 DatasheetPanel {
     height: 1fr;
@@ -30,23 +44,29 @@ DatasheetPanel {
     sheet: reactive[models.Datasheets | None] = reactive(None)
     header: Header
     modelList: Vertical
+    abilities: Abilities
 
     def __init__(self):
         super().__init__()
         self.header = Header("Wahapedia TUI")
-        self.modelList = Vertical()
+        self.modelList = ModelsDisplay()
+        self.abilities = Abilities("Abilities", ())
 
     def compose(self):
         yield self.header
-        yield self.modelList
+        with ModelsContainer():
+            yield self.modelList
+            yield self.abilities
 
     async def watch_sheet(self, sheet: models.Datasheets | None) -> None :
         if sheet is not None:
 #            self.styles.background = "white"
             self.header.update(sheet.name)
             await self.modelList.remove_children()
+            await self.abilities.remove_children()
 
             sheet = get_models_enriched_sheet(sheet)
             await self.modelList.mount(
                 *[Model(model) for model in sheet.models]
             )
+            await self.abilities.mount(Abilities("Abilities", sheet.abilities))

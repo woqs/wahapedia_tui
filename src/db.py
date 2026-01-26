@@ -25,6 +25,8 @@ def get_models_enriched_sheet(sheet: models.Datasheet) -> models.Datasheets:
         models.Datasheets.models
     ).join(
         models.Datasheets.models_cost
+    ).join(
+        models.Datasheets.abilities
     ).where(
         models.Datasheets.id == sheet.id
     )

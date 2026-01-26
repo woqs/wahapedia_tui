@@ -3,3 +3,4 @@ sqlalchemy
 pandas
 textual
 textual-dev
+bs4
